@@ -2,12 +2,19 @@ import os
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+# 🔑 Récupération du token depuis Render
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
+# Initialisation du bot
 bot = telebot.TeleBot(BOT_TOKEN)
 
+# 🖼️ PHOTO D’ACCUEIL
 PHOTO_START_URL = "https://image2url.com/images/1763587287262-54768308-b40a-4f85-93fd-32ddce56375e.jpeg"
 
+
+# -----------------------------
+#         COMMANDE /START
+# -----------------------------
 @bot.message_handler(commands=['start'])
 def start(message):
     keyboard = InlineKeyboardMarkup()
@@ -51,20 +58,29 @@ def start(message):
         reply_markup=keyboard
     )
 
+
+# -----------------------------
+#             CALLBACKS
+# -----------------------------
 @bot.callback_query_handler(func=lambda call: True)
 def callbacks(call):
     if call.data == "info":
         bot.edit_message_caption(
-            "ℹ️ Informations :\n\nTu peux modifier ce texte.",
-            call.message.chat.id,
-            call.message.message_id
+            caption="ℹ️ Informations :\n\nTu peux modifier ce texte.",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id
         )
 
     elif call.data == "contact":
         bot.edit_message_caption(
-            "📞 Contact :\n\nMets ton contact ici.",
-            call.message.chat.id,
-            call.message.message_id
+            caption="📞 Contact :\n\nMets ton contact ici.",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id
         )
 
-bot.infinity_polling()
+
+# -----------------------------
+#         LANCEMENT BOT
+# -----------------------------
+if __name__ == "__main__":
+    bot.infinity_polling()
