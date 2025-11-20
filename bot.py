@@ -2,12 +2,11 @@ import os
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQueryHandler
 
-# 🔑 Ton token récupéré automatiquement par Render
+# 🔑 Render va récupérer ton token automatiquement
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-# 🖼️ PHOTO D'ACCUEIL — METS TON LIEN JPEG !!!
+# 🖼️ PHOTO D'ACCUEIL — METS TON LIEN JPEG ICI
 PHOTO_START_URL = "https://image2url.com/images/1763587287262-54768308-b40a-4f85-93fd-32ddce56375e.jpeg"
-# Remplace par ton lien d’image quand tu veux
 
 
 # -------------------------
@@ -16,7 +15,6 @@ PHOTO_START_URL = "https://image2url.com/images/1763587287262-54768308-b40a-4f85
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-    # ⚡ MENU EXACTEMENT COMME SUR TA PHOTO
     keyboard = [
 
         # Ligne 1
@@ -25,26 +23,26 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             InlineKeyboardButton("Contact 📱", callback_data="contact")
         ],
 
-        # Ligne 2 — Bouton Mini-App
+        # Ligne 2 — Mini-App
         [
             InlineKeyboardButton("Mini-App 🎮", url="https://grosbagel93-cell.github.io/La-stuperie74/")
         ],
 
-        # Ligne 3
+        # Ligne 3 — Lien provisoire (pas d'erreur)
         [
-            InlineKeyboardButton("Telegram 📺", url="https://TON_LIEN_TELEGRAM"),
-            InlineKeyboardButton("Snapchat 👻", url="https://TON_LIEN_SNAPCHAT")
+            InlineKeyboardButton("Telegram 📺", url="https://google.com"),
+            InlineKeyboardButton("Snapchat 👻", url="https://google.com")
         ],
 
-        # Ligne 4
+        # Ligne 4 — Lien provisoire
         [
-            InlineKeyboardButton("Potato 🥔", url="https://TON_LIEN_POTATO"),
-            InlineKeyboardButton("Instagram 📸", url="https://TON_LIEN_INSTAGRAM")
+            InlineKeyboardButton("Potato 🥔", url="https://google.com"),
+            InlineKeyboardButton("Instagram 📸", url="https://google.com")
         ],
 
-        # Ligne 5
+        # Ligne 5 — Lien provisoire
         [
-            InlineKeyboardButton("Linkbio 🔗", url="https://TON_LINKBIO")
+            InlineKeyboardButton("Linkbio 🔗", url="https://google.com")
         ]
     ]
 
@@ -62,7 +60,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # -------------------------
-#       CALLBACKS MENU
+#        CALLBACKS MENU
 # -------------------------
 
 async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -72,13 +70,13 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if query.data == "info":
         await query.edit_message_caption(
             "ℹ️ Informations :\n\n"
-            "(Modifie ce texte comme tu veux)"
+            "Tu peux modifier ce message dans le bot."
         )
 
     elif query.data == "contact":
         await query.edit_message_caption(
             "📞 Contact :\n\n"
-            "(Mets ici ton contact)"
+            "Tu peux mettre ton contact ici."
         )
 
 
