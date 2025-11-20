@@ -49,7 +49,7 @@ def start(message):
     bot.send_photo(
         message.chat.id,
         PHOTO_START_URL,
-        caption="BONJOUR 👋\nBienvenue sur le bot officiel 🎮📍 pour avoire acces au menu cliké mini-app",
+        caption="BONJOUR 👋\nBienvenue sur le bot officiel 🎮📍 pour avoire acces au menu cliqué mini-app",
         reply_markup=markup
     )
 
