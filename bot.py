@@ -2,96 +2,83 @@ import os
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-# 🔑 Render va récupérer ton token automatiquement
+# 🔑 Token récupéré automatiquement par Render
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-# 🖼️ PHOTO D'ACCUEIL — METS TON LIEN JPEG ICI
+bot = telebot.TeleBot(BOT_TOKEN)
+
+# 🖼️ PHOTO D’ACCUEIL
 PHOTO_START_URL = "https://image2url.com/images/1763587287262-54768308-b40a-4f85-93fd-32ddce56375e.jpeg"
 
 
 # -------------------------
 #      COMMANDE /START
 # -------------------------
+@bot.message_handler(commands=['start'])
+def start(message):
+    markup = InlineKeyboardMarkup()
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # Ligne 1
+    markup.add(
+        InlineKeyboardButton("Informations ℹ️", callback_data="info"),
+        InlineKeyboardButton("Contact 📱", callback_data="contact")
+    )
 
-    keyboard = [
+    # Ligne 2 — Mini App
+    markup.add(
+        InlineKeyboardButton("Mini-App 🎮", url="https://grosbagel93-cell.github.io/La-stuperie74/")
+    )
 
-        # Ligne 1
-        [
-            InlineKeyboardButton("Informations ℹ️", callback_data="info"),
-            InlineKeyboardButton("Contact 📱", callback_data="contact")
-        ],
+    # Ligne 3
+    markup.add(
+        InlineKeyboardButton("Telegram 📺", url="https://google.com"),
+        InlineKeyboardButton("Snapchat 👻", url="https://google.com")
+    )
 
-        # Ligne 2 — Mini-App
-        [
-            InlineKeyboardButton("Mini-App 🎮", url="https://grosbagel93-cell.github.io/La-stuperie74/")
-        ],
+    # Ligne 4
+    markup.add(
+        InlineKeyboardButton("Potato 🥔", url="https://google.com"),
+        InlineKeyboardButton("Instagram 📸", url="https://google.com")
+    )
 
-        # Ligne 3 — Lien provisoire (pas d'erreur)
-        [
-            InlineKeyboardButton("Telegram 📺", url="https://google.com"),
-            InlineKeyboardButton("Snapchat 👻", url="https://google.com")
-        ],
+    # Ligne 5
+    markup.add(
+        InlineKeyboardButton("Linkbio 🔗", url="https://google.com")
+    )
 
-        # Ligne 4 — Lien provisoire
-        [
-            InlineKeyboardButton("Potato 🥔", url="https://google.com"),
-            InlineKeyboardButton("Instagram 📸", url="https://google.com")
-        ],
-
-        # Ligne 5 — Lien provisoire
-        [
-            InlineKeyboardButton("Linkbio 🔗", url="https://google.com")
-        ]
-    ]
-
-    reply_markup = InlineKeyboardMarkup(keyboard)
-
-    await update.message.reply_photo(
-        photo=PHOTO_START_URL,
+    bot.send_photo(
+        message.chat.id,
+        PHOTO_START_URL,
         caption=(
             "BONJOUR À TOUS 👋\n\n"
             "Bienvenue sur notre BOT Officiel 🤖\n\n"
             "Clique sur « Mini-App » pour accéder au menu 🎮📍"
         ),
-        reply_markup=reply_markup
+        reply_markup=markup
     )
 
 
 # -------------------------
-#        CALLBACKS MENU
+#       CALLBACKS
 # -------------------------
-
-async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-
-    if query.data == "info":
-        await query.edit_message_caption(
-            "ℹ️ Informations :\n\n"
-            "Tu peux modifier ce message dans le bot."
+@bot.callback_query_handler(func=lambda call: True)
+def callback_query(call):
+    if call.data == "info":
+        bot.edit_message_caption(
+            "ℹ️ Informations :\n\nTu peux mettre tes infos ici.",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id
         )
 
-    elif query.data == "contact":
-        await query.edit_message_caption(
-            "📞 Contact :\n\n"
-            "Tu peux mettre ton contact ici."
+    elif call.data == "contact":
+        bot.edit_message_caption(
+            "📞 Contact :\n\nMets ton numéro ou ton lien ici.",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id
         )
 
 
 # -------------------------
-#        LANCEMENT BOT
+#     LANCEMENT DU BOT
 # -------------------------
-
-def main():
-    app = Application.builder().token(BOT_TOKEN).build()
-
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CallbackQueryHandler(button))
-
-    app.run_polling()
-
-
-if __name__ == "__main__":
-    main()
+bot.infinity_polling()
