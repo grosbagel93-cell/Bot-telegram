@@ -1,6 +1,6 @@
 import os
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQueryHandler
+import telebot
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # 🔑 Render va récupérer ton token automatiquement
 BOT_TOKEN = os.getenv("BOT_TOKEN")
