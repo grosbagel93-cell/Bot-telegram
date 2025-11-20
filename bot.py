@@ -1,80 +1,70 @@
 import os
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
-from flask import Flask
 
-# Bot token
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+
 bot = telebot.TeleBot(BOT_TOKEN)
 
-# Flask server (obligatoire pour Render)
-app = Flask(__name__)
-
-# Route simple pour Render
-@app.route("/")
-def home():
-    return "Bot Telegram OK"
-
-# Photo d'accueil
 PHOTO_START_URL = "https://image2url.com/images/1763587287262-54768308-b40a-4f85-93fd-32ddce56375e.jpeg"
 
-# Commande /start
 @bot.message_handler(commands=['start'])
 def start(message):
-    markup = InlineKeyboardMarkup()
+    keyboard = InlineKeyboardMarkup()
 
-    markup.add(
+    # Ligne 1
+    keyboard.add(
         InlineKeyboardButton("Informations ℹ️", callback_data="info"),
         InlineKeyboardButton("Contact 📱", callback_data="contact")
     )
 
-    markup.add(
+    # Ligne 2 — Mini-App
+    keyboard.add(
         InlineKeyboardButton("Mini-App 🎮", url="https://grosbagel93-cell.github.io/La-stuperie74/")
     )
 
-    markup.add(
+    # Ligne 3
+    keyboard.add(
         InlineKeyboardButton("Telegram 📺", url="https://google.com"),
         InlineKeyboardButton("Snapchat 👻", url="https://google.com")
     )
 
-    markup.add(
+    # Ligne 4
+    keyboard.add(
         InlineKeyboardButton("Potato 🥔", url="https://google.com"),
         InlineKeyboardButton("Instagram 📸", url="https://google.com")
     )
 
-    markup.add(
+    # Ligne 5
+    keyboard.add(
         InlineKeyboardButton("Linkbio 🔗", url="https://google.com")
     )
 
     bot.send_photo(
         message.chat.id,
         PHOTO_START_URL,
-        caption="BONJOUR 👋\nBienvenue sur le bot officiel 🎮📍 pour avoire acces au menu cliqué mini-app",
-        reply_markup=markup
+        caption=(
+            "BONJOUR À TOUS 👋\n\n"
+            "Bienvenue sur notre BOT Officiel 🤖\n\n"
+            "Clique sur « Mini-App » pour accéder au menu 🎮📍"
+        ),
+        reply_markup=keyboard
     )
 
-# Boutons
 @bot.callback_query_handler(func=lambda call: True)
-def callback_query(call):
+def callbacks(call):
     if call.data == "info":
         bot.edit_message_caption(
-            "ℹ️ Informations",
-            chat_id=call.message.chat.id,
-            message_id=call.message.message_id
+            "ℹ️ Informations :\n\nTu peux modifier ce texte.",
+            call.message.chat.id,
+            call.message.message_id
         )
+
     elif call.data == "contact":
         bot.edit_message_caption(
-            "📞 Contact",
-            chat_id=call.message.chat.id,
-            message_id=call.message.message_id
+            "📞 Contact :\n\nMets ton contact ici.",
+            call.message.chat.id,
+            call.message.message_id
         )
 
-# Lancement bot + Flask
-if __name__ == "__main__":
-    # Lancer le polling dans un thread
-    import threading
-    threading.Thread(target=lambda: bot.infinity_polling()).start()
-
-    # Lancer Flask pour Render (port dynamique)
-    port = int(os.getenv("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+bot.infinity_polling()
