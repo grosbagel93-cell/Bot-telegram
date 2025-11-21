@@ -82,5 +82,9 @@ def callbacks(call):
 # -----------------------------
 #         LANCEMENT BOT
 # -----------------------------
-if __name__ == "__main__":
-    bot.infinity_polling()
+elif call.data == "contact":
+        bot.edit_message_caption(
+            caption="📞 Contact :\n\nMets ton contact ici.",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id
+        )
