@@ -71,5 +71,19 @@ def callbacks(call):
 # -----------------------------
 #        LANCEMENT
 # -----------------------------
+from flask import Flask, request
+import telebot
+import json
+
+app = Flask(__name__)
+
+@app.route('/', methods=['POST'])
+def webhook():
+    update = telebot.types.Update.de_json(
+        request.stream.read().decode("utf-8")
+    )
+    bot.process_new_updates([update])
+    return "OK", 200
+
 if __name__ == "__main__":
-    bot.infinity_polling()
+    app.run(host="0.0.0.0", port=10000)
