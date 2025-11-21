@@ -1,6 +1,6 @@
 import os
 import telebot
-from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 bot = telebot.TeleBot(BOT_TOKEN)
@@ -17,9 +17,12 @@ def start(message):
         InlineKeyboardButton("Contact 📱", callback_data="contact")
     )
 
-    # Ligne 2 — Mini-App
+    # Ligne 2 — MINI-APP BUTTON (Telegram)
     keyboard.add(
-        InlineKeyboardButton("Mini-App 🎮", url="https://grosbagel93-cell.github.io/La-stuperie74/")
+        InlineKeyboardButton(
+            "Mini-App 🎮",
+            web_app=WebAppInfo("https://grosbagel93-cell.github.io/La-stuperie74/")
+        )
     )
 
     # Ligne 3
@@ -50,6 +53,7 @@ def start(message):
         reply_markup=keyboard
     )
 
+
 @bot.callback_query_handler(func=lambda call: True)
 def callbacks(call):
     if call.data == "info":
@@ -58,7 +62,6 @@ def callbacks(call):
             chat_id=call.message.chat.id,
             message_id=call.message.message_id
         )
-
     elif call.data == "contact":
         bot.edit_message_caption(
             caption="📞 Contact :\n\nMets ton contact ici.",
@@ -68,5 +71,4 @@ def callbacks(call):
 
 
 if __name__ == "__main__":
-    # On NE poll pas ici. Le polling est fait via web.py.
-    print("bot.py chargé")       
+    print("bot.py chargé")
