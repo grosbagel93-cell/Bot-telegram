@@ -20,8 +20,8 @@ def start(message):
     # Ligne 2 — MINI-APP BUTTON (Telegram)
     keyboard.add(
         InlineKeyboardButton(
-            "Mini-App 🎮",
-            web_app=WebAppInfo("https://grosbagel93-cell.github.io/La-stuperie74/")
+            text="Mini-App 🎮",  # texte affiché au lieu de l'URL
+            web_app=WebAppInfo(url="https://grosbagel93-cell.github.io/La-stuperie74/")
         )
     )
 
@@ -72,3 +72,4 @@ def callbacks(call):
 
 if __name__ == "__main__":
     print("bot.py chargé")
+    bot.infinity_polling()
