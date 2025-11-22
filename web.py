@@ -1,4 +1,5 @@
 import telebot
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 from flask import Flask, request
 
 # ------------ TOKEN ------------
@@ -11,34 +12,37 @@ app = Flask(__name__)
 # ------------ HANDLER START ------------
 @bot.message_handler(commands=['start'])
 def start(message):
-    keyboard = telebot.types.InlineKeyboardMarkup()
+    keyboard = InlineKeyboardMarkup()
 
     # Ligne 1
     keyboard.add(
-        telebot.types.InlineKeyboardButton("Informations ℹ️", callback_data="info"),
-        telebot.types.InlineKeyboardButton("Contact 📱", callback_data="contact")
+        InlineKeyboardButton("Informations ℹ️", callback_data="info"),
+        InlineKeyboardButton("Contact 📱", callback_data="contact")
     )
 
     # Ligne 2 — Mini-App
     keyboard.add(
-        telebot.types.InlineKeyboardButton("Mini-App 🎮", url="https://grosbagel93-cell.github.io/La-stuperie74/")
+        InlineKeyboardButton(
+            text="Mini-App 🎮",  # texte du bouton affiché
+            web_app=WebAppInfo(url="https://grosbagel93-cell.github.io/La-stuperie74/")
+        )
     )
 
     # Ligne 3
     keyboard.add(
-        telebot.types.InlineKeyboardButton("Telegram 📺", url="https://google.com"),
-        telebot.types.InlineKeyboardButton("Snapchat 👻", url="https://google.com")
+        InlineKeyboardButton("Telegram 📺", url="https://google.com"),
+        InlineKeyboardButton("Snapchat 👻", url="https://google.com")
     )
 
     # Ligne 4
     keyboard.add(
-        telebot.types.InlineKeyboardButton("Potato 🥔", url="https://google.com"),
-        telebot.types.InlineKeyboardButton("Instagram 📸", url="https://google.com")
+        InlineKeyboardButton("Potato 🥔", url="https://google.com"),
+        InlineKeyboardButton("Instagram 📸", url="https://google.com")
     )
 
     # Ligne 5
     keyboard.add(
-        telebot.types.InlineKeyboardButton("Linkbio 🔗", url="https://google.com")
+        InlineKeyboardButton("Linkbio 🔗", url="https://google.com")
     )
 
     bot.send_photo(
