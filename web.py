@@ -31,7 +31,7 @@ def start(message):
     # Ligne 3
     keyboard.add(
         InlineKeyboardButton("Telegram 📺", url="https://google.com"),
-        InlineKeyboardButton("Snapchat 👻", url="https://google.com")
+        InlineKeyboardButton("Snapchat 👻", url="https://www.snapchat.com/add/bcn-74?share_id=ZCXrraoK2WA&locale=fr-FR")
     )
 
     # Ligne 4
